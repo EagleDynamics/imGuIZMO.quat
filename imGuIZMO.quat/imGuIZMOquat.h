@@ -7,7 +7,7 @@
 //  twitter: https://twitter.com/BrutPitt - github: https://github.com/BrutPitt
 //
 //  mailto:brutpitt@gmail.com - mailto:me@michelemorrone.eu
-//  
+//
 //  This software is distributed under the terms of the BSD 2-Clause license
 //------------------------------------------------------------------------------
 #pragma once
@@ -42,7 +42,7 @@
 //    for solid components, but there are more vertex memorized and more operations,
 //    even if the visual effect is better... the computational difference is:
 //    one normal for vertex  VS  one normal for plain figure (triangle or quad)
-//    
+//
 //    comment/uncomment below or add as directive to compiler
 ////////////////////////////////////////////////////////////////////////////
 
@@ -76,28 +76,28 @@ struct imguiGizmo
 #endif
 
     enum      {                              //0b0000'0000, //C++14 notation
-                mode3Axes          = 0x0001, //0b0000'0001, 
+                mode3Axes          = 0x0001, //0b0000'0001,
                 modeDirection      = 0x0002, //0b0000'0010,
                 modeDirPlane       = 0x0004, //0b0000'0100,
                 modeDual           = 0x0008, //0b0000'1000,
                 modePanDolly       = 0x0010, //0b0001'0000,
-                modeMask           = 0x00ff, 
-                
+                modeMask           = 0x00ff,
 
-                cubeAtOrigin       = 0x0100, //0b0000'0000, 
+
+                cubeAtOrigin       = 0x0100, //0b0000'0000,
                 sphereAtOrigin     = 0x0200, //0b0001'0000,
                 noSolidAtOrigin    = 0x0400, //0b0010'0000,
                 modeFullAxes       = 0x0800,
-                axesModeMask       = 0xff00  
+                axesModeMask       = 0xff00
     };
 
     enum { sphereTess16, sphereTess8, sphereTess4, sphereTess2 };
     enum { CONE_SURF, CONE_CAP, CYL_SURF, CYL_CAP };
     //enum { SOLID_SURF, SOLID_CAP }
-    //enum { 
+    //enum {
     enum { axisIsX, axisIsY, axisIsZ };
 
-    enum solidSides{ backSide, frontSide  }; // or viceversa... 
+    enum solidSides{ backSide, frontSide  }; // or viceversa...
     static ImVector<vec3> sphereVtx;
     static ImVector<int>  sphereTess;
     static ImVector<vec3> cubeVtx;
@@ -116,8 +116,8 @@ struct imguiGizmo
     static void buildSphere  (const float radius, const int tessFactor);
     static void buildCone    (const float x0, const float x1, const float radius, const int slices);
     static void buildCylinder(const float x0, const float x1, const float radius, const int slices);
-    
-    
+
+
     // helper functions
     ///////////////////////////////////////
     static void resizeAxesOf(const vec3 &newSize) {
@@ -133,17 +133,17 @@ struct imguiGizmo
     static void setDirectionColor(ImU32 dColor, const ImU32 pColor) {
         setDirectionColor(ImGui::ColorConvertU32ToFloat4(dColor), ImGui::ColorConvertU32ToFloat4(pColor)); }
     static void setDirectionColor(const ImVec4 &dColor, const ImVec4 &pColor) {
-        savedDirectionColor = directionColor; savedPlaneColor = planeColor; 
+        savedDirectionColor = directionColor; savedPlaneColor = planeColor;
         directionColor = dColor; planeColor = pColor;
     }
-    static void setDirectionColor(ImU32 color) { setDirectionColor(ImGui::ColorConvertU32ToFloat4(color)); } 
+    static void setDirectionColor(ImU32 color) { setDirectionColor(ImGui::ColorConvertU32ToFloat4(color)); }
     static void setDirectionColor(const ImVec4& color) { setDirectionColor(color,ImVec4(color.x, color.y, color.z, STARTING_ALPHA_PLANE));  }
     static void restoreDirectionColor() {
-        directionColor = savedDirectionColor; 
+        directionColor = savedDirectionColor;
         planeColor     = savedPlaneColor;     }
 
     static void setSphereColors(const ImVec4& a, const ImVec4& b) {
-        setSphereColors( ImGui::ColorConvertFloat4ToU32(a), ImGui::ColorConvertFloat4ToU32(b)); }    
+        setSphereColors( ImGui::ColorConvertFloat4ToU32(a), ImGui::ColorConvertFloat4ToU32(b)); }
     static void setSphereColors(ImU32 a, ImU32 b) {
         savedSphereColors[0] = sphereColors[0]; savedSphereColors[1] = sphereColors[1];
         sphereColors[0] = a; sphereColors[1] = b; }
@@ -153,7 +153,7 @@ struct imguiGizmo
 
     //  gizmo mouse/key settings
     ////////////////////////////////////////////////////////////////////////////
-    // Call it once, to set all widgets... or if you need it 
+    // Call it once, to set all widgets... or if you need it
     static void setGizmoFeelingRot(float f) { gizmoFeelingRot = f; } // default 1.0, >1 more mouse sensitivity, <1 less mouse sensitivity
     static float getGizmoFeelingRot() { return gizmoFeelingRot; }
 
@@ -167,10 +167,10 @@ struct imguiGizmo
     static void setDollyModifier(vgModifiers v) { panMod = v; }  // Change default assignment for Dolly
 
     //  Set the mouse response for the dolly operation...  also wheel
-    static void setDollyScale(float  scale) { dollyScale = scale;  } // default 1.0, >1 more, <1 less 
+    static void setDollyScale(float  scale) { dollyScale = scale;  } // default 1.0, >1 more, <1 less
     static float getDollyScale() { return dollyScale;  }
-    //  Set the mouse response for pan    
-    static void setPanScale(float scale) { panScale = scale; } // default 1.0, >1 more, <1 less 
+    //  Set the mouse response for pan
+    static void setPanScale(float scale) { panScale = scale; } // default 1.0, >1 more, <1 less
     static float getPanScale() { return panScale; }
 #endif
 
@@ -210,33 +210,33 @@ struct imguiGizmo
     ////////////////////////////////////////////////////////////////////////////
     bool getTransforms(quat& q, const char* label, vec4& axis_angle, float size) {
         q = angleAxis(axis_angle.w,vec3(axis_angle)); //g.ConvertFromAxisAngle();
-   
+
         bool ret = drawFunc(label, size);
         if (ret) axis_angle = vec4(vec3(axis(q)),angle(q));
 
-        return ret; 
+        return ret;
     }
 
     //
     //  Settings
     //
-    //      axes/arrow are composed of cone (or pyramid) and cylinder 
+    //      axes/arrow are composed of cone (or pyramid) and cylinder
     //      (or parallelepiped): this solid are builded at first instance
-    //      and will have same slices/radius/length for all controls in your 
+    //      and will have same slices/radius/length for all controls in your
     //      applications but can be  resized proportionally with a reductin
     //      factor: resizeAxesOf and resizeSolidOf (below).
-    //      Also the colors of sphere tessellation are set at buil time, 
+    //      Also the colors of sphere tessellation are set at buil time,
     //      while colors of axes and cube are fixed
     //
     //      if you want change solids attributes, change the static variables.
-    //      If you need to resize solid and axes use resizeAxesOf and 
-    //      resizeSolidOf, they works like push/pop stack (without buffer!) 
+    //      If you need to resize solid and axes use resizeAxesOf and
+    //      resizeSolidOf, they works like push/pop stack (without buffer!)
     //      with respective restoreAxesSize and restoreSolidSize.
     //      for example:
-    //          // reDim axes ... same lenght, 
-    //          imguiGizmo::resizeAxesOf(vec3(imguiGizmo::axesResizeFactor.x, 2.0, 2.0)); 
+    //          // reDim axes ... same lenght,
+    //          imguiGizmo::resizeAxesOf(vec3(imguiGizmo::axesResizeFactor.x, 2.0, 2.0));
     //          imguiGizmo::resizeSolidOf(1.25); // sphere bigger
-    //          ImGui::gizmo3D("##RotB", b,sz);   
+    //          ImGui::gizmo3D("##RotB", b,sz);
     //          imguiGizmo::restoreSolidSize(); // restore at default
     //          imguiGizmo::restoreAxesSize();
     ////////////////////////////////////////////////////////////////////////////
@@ -253,7 +253,7 @@ struct imguiGizmo
     static float coneLength;
 
     static int   cylSlices  ;
-    static float cylRadius ;  // sizeCylLength ... defined in base to control size    
+    static float cylRadius ;  // sizeCylLength ... defined in base to control size
 
     // Sphere components
     ///////////////////////////////////////
@@ -290,7 +290,7 @@ struct imguiGizmo
     static ImU32 sphereColors[2]; // Tessellation colors
     static ImU32 savedSphereColors[2];
     //ImU32 spherecolorA=0xff005cc0, spherecolorB=0xffc05c00;
-    
+
     static ImVec4 directionColor;
     static ImVec4 savedDirectionColor;
 

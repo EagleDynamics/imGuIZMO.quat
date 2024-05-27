@@ -7,7 +7,7 @@
 //  twitter: https://twitter.com/BrutPitt - github: https://github.com/BrutPitt
 //
 //  mailto:brutpitt@gmail.com - mailto:me@michelemorrone.eu
-//  
+//
 //  This software is distributed under the terms of the BSD 2-Clause license
 //------------------------------------------------------------------------------
 #pragma once
@@ -31,7 +31,7 @@ namespace vg {
 //  Default values for button and modifiers.
 //      This values are aligned with GLFW defines (for my comfort),
 //      but they are loose from any platform library: simply initialize
-//      the virtualGizmo with your values: 
+//      the virtualGizmo with your values:
 //          look at "onInit" in glWindow.cpp example.
 //////////////////////////////////////////////////////////////////////
     enum {
@@ -45,7 +45,7 @@ namespace vg {
         evShiftModifier   =  1   ,
         evControlModifier =  1<<1,
         evAltModifier     =  1<<2,
-        evSuperModifier   =  1<<3  
+        evSuperModifier   =  1<<3
     };
 
 //////////////////////////////////////////////////////////////////////
@@ -62,7 +62,7 @@ public:
                            tbControlButton(evLeftButton), tbControlModifiers(evNoModifier),
                            tbRotationButton(evRightButton), xRotationModifier(evShiftModifier),
                            yRotationModifier(evControlModifier),  zRotationModifier(evAltModifier|evSuperModifier)
-    { 
+    {
         viewportSize(T(256), T(256));  //initial dummy value
     }
     virtual ~virtualGizmoBaseClass() {}
@@ -70,8 +70,8 @@ public:
     //    Call to initialize and on reshape
     ////////////////////////////////////////////////////////////////////////////
     void viewportSize(int w, int h) { viewportSize(T(w), T(h)); }
-    void viewportSize(T w, T h) { 
-        width = w; height = h; 
+    void viewportSize(T w, T h) {
+        width = w; height = h;
         minVal = T(width < height ? width*T(0.5) : height*T(0.5));
         offset = tVec3(T(.5 * width), T(.5 * height), T(0));
     }
@@ -86,7 +86,7 @@ public:
         delta.x = delta.y = 0;
     }
     void inline testRotModifier(int x, int y, vgModifiers mod) { }
-    
+
     //    Call on mouse button event
     //      button:  your mouse button
     //      mod:     your modifier key -> CTRL, SHIFT, ALT, SUPER
@@ -108,10 +108,10 @@ public:
             if      (xRotationModifier & mod) { tbActive = true; rotationVector = tVec3(T(1), T(0), T(0)); activateMouse(x,y); }
             else if (yRotationModifier & mod) { tbActive = true; rotationVector = tVec3(T(0), T(1), T(0)); activateMouse(x,y); }
             else if (zRotationModifier & mod) { tbActive = true; rotationVector = tVec3(T(0), T(0), T(1)); activateMouse(x,y); }
-        } else if((button == tbRotationButton) && !pressed) { 
-            deactivateMouse(); rotationVector = tVec3(T(1)); tbActive = false; 
+        } else if((button == tbRotationButton) && !pressed) {
+            deactivateMouse(); rotationVector = tVec3(T(1)); tbActive = false;
         }
-    
+
     }
 
     //    Call on Mouse motion
@@ -128,14 +128,14 @@ public:
         update();
     }
 
-    //    Call every rendering to implement continue spin rotation 
+    //    Call every rendering to implement continue spin rotation
     ////////////////////////////////////////////////////////////////////////////
     void idle() { qtV = qtIdle*qtV;  }
 
     //    Call after changed settings
     ////////////////////////////////////////////////////////////////////////////
     virtual void update() = 0;
-    void updateGizmo() 
+    void updateGizmo()
     {
 
         if(!delta.x && !delta.y) {
@@ -160,7 +160,7 @@ public:
         tVec3 axis = cross(a, b);
         axis = normalize(axis);
 
-        T AdotB = dot(a, b); 
+        T AdotB = dot(a, b);
         T angle = acos( AdotB>T(1) ? T(1) : (AdotB<-T(1) ? -T(1) : AdotB)); // clamp need!!! corss float is approximate to FLT_EPSILON
 
         qtStep = normalize(angleAxis(angle * tbScale * fpsRatio                  , axis * rotationVector));
@@ -178,14 +178,14 @@ public:
 
     //  Apply rotation
     //////////////////////////////////////////////////////////////////
-    inline void applyRotation(tMat4 &m) { m = m * mat4_cast(qtV); }                                     
+    inline void applyRotation(tMat4 &m) { m = m * mat4_cast(qtV); }
 
     //  Set the point around which the virtualGizmo will rotate.
     //////////////////////////////////////////////////////////////////
     void setRotationCenter( const tVec3& c) { rotationCenter = c; }
     tVec3& getRotationCenter() { return rotationCenter; }
 
-    //  Set the mouse button and modifier for rotation 
+    //  Set the mouse button and modifier for rotation
     //////////////////////////////////////////////////////////////////
     void setGizmoRotControl( vgButtons b, vgModifiers m = evNoModifier) {
         tbControlButton = b;
@@ -265,7 +265,7 @@ protected:
     tVec2 pos, delta;
 
     // UI commands that this virtualGizmo responds to (defaults to left mouse button with no modifier key)
-    vgButtons   tbControlButton, tbRotationButton;   
+    vgButtons   tbControlButton, tbRotationButton;
     vgModifiers tbControlModifiers, xRotationModifier, yRotationModifier, zRotationModifier;
 
     tVec3 rotationVector = tVec3(T(1));
@@ -281,7 +281,7 @@ protected:
     T tbScale = T(1);    //base scale sensibility
     T fpsRatio = T(1);   //auto adjust by FPS (call idle with current FPS)
     T qIdleSpeedRatio = T(.33); //autoRotation factor to speedup/slowdown
-    
+
     T minVal;
     tVec3 offset;
 
@@ -294,7 +294,7 @@ protected:
 //////////////////////////////////////////////////////////////////////
 //
 // virtualGizmoClass
-//  trackball: simple mouse rotation control 
+//  trackball: simple mouse rotation control
 //
 //////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
@@ -324,7 +324,7 @@ public:
 
         trans = translate(tMat4(T(1)),this->rotationCenter);
         invTrans = translate(tMat4(T(1)),-this->rotationCenter);
-        
+
         return invTrans * rotation * trans;
     }
 
@@ -347,7 +347,7 @@ public:
 TEMPLATE_TYPENAME_T class virtualGizmo3DClass : public VGIZMO_BASE_CLASS {
 
 using VGIZMO_BASE_CLASS::delta;
-using VGIZMO_BASE_CLASS::qtV; 
+using VGIZMO_BASE_CLASS::qtV;
 
 public:
     //////////////////////////////////////////////////////////////////
@@ -367,7 +367,7 @@ public:
             this->deactivateMouse();
             dollyActive = false;
         }
-        
+
         if ( button == panControlButton && pressed && (panControlModifiers ? panControlModifiers & mod : panControlModifiers == mod) ) {
             panActive = true;
             this->activateMouse(x,y);
@@ -521,7 +521,7 @@ private:
 
     // Variable used to determine if the manipulator is presently tracking the mouse
     bool dollyActive;
-    bool panActive;      
+    bool panActive;
 
     tVec3 pan   = tVec3(T(0));
     tVec3 dolly = tVec3(T(0));

@@ -7,7 +7,7 @@
 //  twitter: https://twitter.com/BrutPitt - github: https://github.com/BrutPitt
 //
 //  mailto:brutpitt@gmail.com - mailto:me@michelemorrone.eu
-//  
+//
 //  This software is distributed under the terms of the BSD 2-Clause license
 //------------------------------------------------------------------------------
 #pragma once
@@ -71,10 +71,10 @@
         #define QUAT_PRECISION Quat<VG_T_TYPE>
         #define MAT3_PRECISION Mat3<VG_T_TYPE>
         #define MAT4_PRECISION Mat4<VG_T_TYPE>
-        
+
         #define T_PI vgm::pi<VG_T_TYPE>()
         #define T_INV_PI vgm::one_over_pi<VG_T_TYPE>()
-    
+
     #else
         #define TEMPLATE_TYPENAME_T
 
@@ -200,7 +200,7 @@ public:
 
     //operator VEC3_T() const { return *((VEC3_T *) &x); }
     Vec4 operator-() const { return {-x, -y, -z, -w}; }
-    
+
     Vec4& operator+=(const Vec4& v) { x += v.x; y += v.y; z += v.z; w += v.w; return *this; }
     Vec4& operator-=(const Vec4& v) { x -= v.x; y -= v.y; z -= v.z; w -= v.w; return *this; }
     Vec4& operator*=(const Vec4& v) { x *= v.x; y *= v.y; z *= v.z; w *= v.w; return *this; }
@@ -246,7 +246,7 @@ public:
                                                    w * q.x + x * q.w + y * q.z - z * q.y,
                                                    w * q.y + y * q.w + z * q.x - x * q.z,
                                                    w * q.z + z * q.w + x * q.y - y * q.x }; }
-                                                
+
     Quat operator*(T s) const { return { w * s, x * s  , y * s  , z * s }; }
     Quat operator/(T s) const { return { w / s, x / s  , y / s  , z / s }; }
 
@@ -280,7 +280,7 @@ public:
           VEC3_T& operator[](int i)       { return v[i]; }
 
     Mat3 operator-() const { return Mat3(-v[0], -v[1], -v[2]); }
-    
+
     Mat3& operator+=(const Mat3& m) { v[0] += m.v[0]; v[1] += m.v[1]; v[2] += m.v[2]; return *this; }
     Mat3& operator-=(const Mat3& m) { v[0] -= m.v[0]; v[1] -= m.v[1]; v[2] -= m.v[2]; return *this; }
     Mat3& operator/=(const Mat3& m) { v[0] /= m.v[0]; v[1] /= m.v[1]; v[2] /= m.v[2]; return *this; }
@@ -482,7 +482,7 @@ TEMPLATE_TYPENAME_T inline MAT4_T inverse(MAT4_T const &m) {
                (v0 * f0 - v2 * f3 + v3 * f4) * -signV,
                (v0 * f1 - v1 * f3 + v3 * f5) *  signV,
                (v0 * f2 - v1 * f4 + v2 * f5) * -signV);
-            
+
     VEC4_T v0r0(m.v[0] * VEC4_T(inv.m00, inv.m10, inv.m20, inv.m30));
     return inv * (T(1) / (v0r0.x + v0r0.y + v0r0.z + v0r0.w)); }// 1/determinant ==> "operator *" is faster
 // external operators
@@ -504,7 +504,7 @@ TEMPLATE_TYPENAME_T inline  VEC3_T operator*(const VEC3_T& v, const QUAT_T& q) {
 // translate / scale
 //////////////////////////
 TEMPLATE_TYPENAME_T inline MAT4_T translate(MAT4_T const& m, VEC3_T const& v) {
-    MAT4_T r(m); r[3] = m[0] * v[0] + m[1] * v[1] + m[2] * v[2] + m[3]; 
+    MAT4_T r(m); r[3] = m[0] * v[0] + m[1] * v[1] + m[2] * v[2] + m[3];
     return r; }
 TEMPLATE_TYPENAME_T inline MAT4_T scale(MAT4_T const& m, VEC3_T const& v) {
     return MAT4_T(m[0] * v[0], m[1] * v[1], m[2] * v[2], m[3]); }
